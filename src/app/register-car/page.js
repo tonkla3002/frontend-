@@ -12,6 +12,7 @@ export default function RegisterPage() {
     lastName: "",
     license: "",
     department: "",
+    otherDepartment: "", // สำหรับเก็บค่าหน่วยงาน "อื่นๆ"
     brand: "",
     model: "",
     color: "",
@@ -19,12 +20,15 @@ export default function RegisterPage() {
     endDate: "",
   });
 
+  const [showDateFields, setShowDateFields] = useState(false); // สถานะสำหรับควบคุมการแสดงช่องวันที่
+
   const departments = [
-    "วิศวกรรมโยธา",
+    "สำนักงานเลขานุการ",
+    "ภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์",
     "วิศวกรรมเครื่องกล",
-    "วิศวกรรมไฟฟ้า",
-    "วิศวกรรมคอมพิวเตอร์",
-    "วิศวกรรมอุตสาหการ",
+    "ภาควิศวกรรมอุตสาหการ",
+    "ภาควิศวกรรมโยธา",
+    "อื่นๆ",
   ];
 
   const handleChange = (e) => {
@@ -35,25 +39,23 @@ export default function RegisterPage() {
     });
   };
 
+  const handleCheckboxChange = () => {
+    setShowDateFields(!showDateFields); // สลับสถานะเมื่อคลิก Checkbox
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // ตรวจสอบวันที่
-    if (!formData.startDate || !formData.endDate) {
-      alert("กรุณาเลือกวันที่เริ่มต้นและวันที่สิ้นสุด");
-      return;
-    }
 
     const payload = {
       firstname: formData.firstName,
       lastname: formData.lastName,
-      department: formData.department,
+      department: formData.department === "อื่นๆ" ? formData.otherDepartment : formData.department,
       license: formData.license,
       brand: formData.brand,
       model: formData.model,
       color: formData.color,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
+      startDate: formData.startDate || null, // หากไม่มีค่า ให้ส่งเป็น null
+      endDate: formData.endDate || null, // หากไม่มีค่า ให้ส่งเป็น null
     };
 
     try {
@@ -113,7 +115,7 @@ export default function RegisterPage() {
               name="department"
               onChange={handleChange}
               className="border p-2 rounded bg-white"
-              defaultValue=""
+              value={formData.department}
             >
               <option value="" disabled>
                 เลือกหน่วยงาน
@@ -125,6 +127,20 @@ export default function RegisterPage() {
               ))}
             </select>
           </div>
+
+          {/* แสดง Textbox เมื่อเลือก "อื่นๆ" */}
+          {formData.department === "อื่นๆ" && (
+            <div className="grid grid-cols-1 gap-4">
+              <input
+                type="text"
+                name="otherDepartment"
+                placeholder="กรอกชื่อหน่วยงาน"
+                onChange={handleChange}
+                className="border p-2 rounded"
+              />
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
               type="text"
@@ -149,25 +165,48 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Checkbox สำหรับควบคุมการแสดงช่องวันที่ */}
+          <div className="flex items-center gap-2">
             <input
-              type="date"
-              name="startDate"
-              onChange={handleChange}
-              className="border p-2 rounded"
+              type="checkbox"
+              id="toggleDateFields"
+              checked={showDateFields}
+              onChange={handleCheckboxChange}
+              className="cursor-pointer"
             />
-            <input
-              type="date"
-              name="endDate"
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
+            <label htmlFor="toggleDateFields" className="cursor-pointer">
+              กำหนดวันที่เริ่มต้นและสิ้นสุด
+            </label>
           </div>
+
+          {/* ช่องกรอกวันที่ */}
+          {showDateFields && (
+            <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center gap-2">
+                <span>วันที่เริ่มต้น:</span>
+                <input
+                  type="date"
+                  name="startDate"
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span>วันที่สิ้นสุด:</span>
+                <input
+                  type="date"
+                  name="endDate"
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+            </div>
+          )}
 
           <div>
             <button
               type="submit"
-              className="bg-green-600 text-white px-6 py-2 rounded justify-center hover:bg-green-700 transition-all w-full"
+              className="bg-green-600 text-white px-6 py-2 rounded justify-center hover:bg-green-700 transition-all items-center flex mx-auto font-semibold"
             >
               Add
             </button>

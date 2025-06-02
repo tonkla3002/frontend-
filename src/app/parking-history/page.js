@@ -8,11 +8,12 @@ export default function ParkingManagementPage() {
   const router = useRouter();
 
   const departments = [
-    "วิศวกรรมโยธา",
+    "สำนักงานเลขานุการ",
+    "ภาควิศวกรรมไฟฟ้าและคอมพิวเตอร์",
     "วิศวกรรมเครื่องกล",
-    "วิศวกรรมไฟฟ้า",
-    "วิศวกรรมคอมพิวเตอร์",
-    "วิศวกรรมอุตสาหการ",
+    "ภาควิศวกรรมอุตสาหการ",
+    "ภาควิศวกรรมโยธา",
+    "อื่นๆ",
   ];
 
   const [filters, setFilters] = useState({
@@ -71,24 +72,7 @@ export default function ParkingManagementPage() {
     setFilteredData(filtered);
   };
 
-  const handleDelete = async (id_park) => {
-    const confirmDelete = confirm("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?");
-    if (!confirmDelete) return;
 
-    try {
-      const res = await fetch(`http://localhost:8000/data_car/${id_park}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("ลบข้อมูลไม่สำเร็จ");
-
-      alert("ลบข้อมูลเรียบร้อยแล้ว");
-      fetchData(); // โหลดข้อมูลใหม่หลังลบ
-    } catch (error) {
-      console.error(error);
-      alert("เกิดข้อผิดพลาดในการลบข้อมูล");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white text-black">
@@ -146,13 +130,16 @@ export default function ParkingManagementPage() {
               className="border px-2 py-1 rounded"
             />
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 items-center">
+          <span>วันที่เริ่มต้น:</span>
             <input
               type="date"
               name="dateFrom"
               onChange={handleChange}
               className="border px-2 py-1 rounded"
             />
+            <span>วันที่สิ้นสุด:</span>
+
             <input
               type="date"
               name="dateTo"
@@ -178,8 +165,7 @@ export default function ParkingManagementPage() {
                 <th className="border px-2 py-1">สีรถ</th>
                 <th className="border px-2 py-1">วันที่เข้าจอด</th>
                 <th className="border px-2 py-1">วันที่ออก</th>
-                <th className="border px-2 py-1">แก้ไข</th>
-                <th className="border px-2 py-1">ลบ</th>
+
               </tr>
             </thead>
             <tbody>
@@ -199,15 +185,6 @@ export default function ParkingManagementPage() {
                       ) : (
                         <span className="text-yellow-600">กำลังจอด</span> // แสดงข้อความ "กำลังจอด" เป็นสีเหลือง
                       )}
-                    </td>
-                    <td className="border px-2 py-1 text-blue-500 cursor-pointer">
-                      ✏️
-                    </td>
-                    <td
-                      className="border px-2 py-1 text-red-500 cursor-pointer"
-                      onClick={() => handleDelete(item.id_park)}
-                    >
-                      🗑️
                     </td>
                   </tr>
                 ))
