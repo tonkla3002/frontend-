@@ -62,7 +62,8 @@ export default function ParkingManagementPage() {
         item.brand.toLowerCase().includes(filters.brand.toLowerCase()) &&
         item.model.toLowerCase().includes(filters.model.toLowerCase()) &&
         item.color.toLowerCase().includes(filters.color.toLowerCase()) &&
-        (!filters.dateFrom || new Date(item.start) >= new Date(filters.dateFrom)) &&
+        (!filters.dateFrom ||
+          new Date(item.start) >= new Date(filters.dateFrom)) &&
         (!filters.dateTo || new Date(item.end) <= new Date(filters.dateTo))
       );
     });
@@ -91,7 +92,7 @@ export default function ParkingManagementPage() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-        <Navbar />
+      <Navbar />
 
       <div className="p-6">
         <form onSubmit={handleSearch} className="space-y-3">
@@ -167,16 +168,16 @@ export default function ParkingManagementPage() {
           </div>
         </form>
 
-        <div className="mt-6">
-          <table className="w-full table-auto border text-sm">
+        <div className="mt-6 ">
+          <table className="w-full table-auto border text-sm text-center">
             <thead>
-              <tr className="bg-gray-200 text-left">
-                <th className="border px-2 py-1">ชื่อ</th>
+              <tr className="bg-gray-200 ">
+                <th className="border px-2 py-1">ทะเบียนรถ</th>
                 <th className="border px-2 py-1">นามสกุล</th>
                 <th className="border px-2 py-1">หน่วยงาน</th>
                 <th className="border px-2 py-1">เลขทะเบียน</th>
-                <th className="border px-2 py-1">วันที่เริ่มจอด</th>
-                <th className="border px-2 py-1">วันที่สิ้นสุด</th>
+                <th className="border px-2 py-1">วันที่เข้าจอด</th>
+                <th className="border px-2 py-1">วันที่ออก</th>
                 <th className="border px-2 py-1">แก้ไข</th>
                 <th className="border px-2 py-1">ลบ</th>
               </tr>
@@ -185,15 +186,19 @@ export default function ParkingManagementPage() {
               {filteredData.length > 0 ? (
                 filteredData.map((item, index) => (
                   <tr key={index}>
-                    <td className="border px-2 py-1">{item.firstname}</td>
+                    <td className="border px-2 py-1">{item.license}</td>
                     <td className="border px-2 py-1">{item.lastname}</td>
                     <td className="border px-2 py-1">{item.department}</td>
                     <td className="border px-2 py-1">{item.license}</td>
                     <td className="border px-2 py-1">
                       {new Date(item.start).toLocaleDateString("th-TH")}
                     </td>
-                    <td className="border px-2 py-1">
-                      {new Date(item.end).toLocaleDateString("th-TH")}
+                    <td className="border px-2 py-1 text">
+                      {item.end ? (
+                        new Date(item.end).toLocaleDateString("th-TH") // แสดงวันที่หากมีค่า
+                      ) : (
+                        <span className="text-yellow-600">กำลังจอด</span> // แสดงข้อความ "กำลังจอด" เป็นสีเหลือง
+                      )}
                     </td>
                     <td className="border px-2 py-1 text-blue-500 cursor-pointer">
                       ✏️

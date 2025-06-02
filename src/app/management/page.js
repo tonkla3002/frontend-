@@ -170,9 +170,9 @@ export default function ParkingManagementPage() {
         </form>
 
         <div className="mt-6">
-          <table className="w-full table-auto border text-sm">
+          <table className="w-full table-auto border text-sm text-center">
             <thead>
-              <tr className="bg-gray-200 text-left">
+              <tr className="bg-gray-200 ">
                 <th className="border px-2 py-1">ชื่อ</th>
                 <th className="border px-2 py-1">นามสกุล</th>
                 <th className="border px-2 py-1">หน่วยงาน</th>
