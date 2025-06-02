@@ -197,11 +197,11 @@ export default function ParkingManagementPage() {
                     <td className="border px-2 py-1">
                       {new Date(item.end_at).toLocaleDateString("th-TH")}
                     </td>
-                    <td className="border px-2 py-1 text-blue-500 cursor-pointer">
+                    <td className="border px-2 py-1  cursor-pointer">
                       ✏️
                     </td>
                     <td
-                      className="border px-2 py-1 text-red-500 cursor-pointer"
+                      className="border px-2 py-1  cursor-pointer"
                       onClick={() => handleDelete(item.id_person)} // เพิ่มตรงนี้
                     >
                       🗑️

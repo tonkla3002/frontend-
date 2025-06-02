@@ -173,9 +173,9 @@ export default function ParkingManagementPage() {
             <thead>
               <tr className="bg-gray-200 ">
                 <th className="border px-2 py-1">ทะเบียนรถ</th>
-                <th className="border px-2 py-1">นามสกุล</th>
-                <th className="border px-2 py-1">หน่วยงาน</th>
-                <th className="border px-2 py-1">เลขทะเบียน</th>
+                <th className="border px-2 py-1">ยี่ห้อรถ</th>
+                <th className="border px-2 py-1">รุ่นรถ</th>
+                <th className="border px-2 py-1">สีรถ</th>
                 <th className="border px-2 py-1">วันที่เข้าจอด</th>
                 <th className="border px-2 py-1">วันที่ออก</th>
                 <th className="border px-2 py-1">แก้ไข</th>
@@ -187,9 +187,9 @@ export default function ParkingManagementPage() {
                 filteredData.map((item, index) => (
                   <tr key={index}>
                     <td className="border px-2 py-1">{item.license}</td>
-                    <td className="border px-2 py-1">{item.lastname}</td>
-                    <td className="border px-2 py-1">{item.department}</td>
-                    <td className="border px-2 py-1">{item.license}</td>
+                    <td className="border px-2 py-1">{item.brand}</td>
+                    <td className="border px-2 py-1">{item.model}</td>
+                    <td className="border px-2 py-1">{item.color}</td>
                     <td className="border px-2 py-1">
                       {new Date(item.start).toLocaleDateString("th-TH")}
                     </td>

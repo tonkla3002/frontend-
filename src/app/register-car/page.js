@@ -15,7 +15,6 @@ export default function RegisterPage() {
     brand: "",
     model: "",
     color: "",
-    isDateRange: false,
     startDate: "",
     endDate: "",
   });
@@ -29,22 +28,20 @@ export default function RegisterPage() {
   ];
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ตรวจสอบวันที่ถ้าเลือกกำหนดช่วงเวลา
-    if (formData.isDateRange) {
-      if (!formData.startDate || !formData.endDate) {
-        alert("กรุณาเลือกวันที่เริ่มต้นและวันที่สิ้นสุด");
-        return;
-      }
+    // ตรวจสอบวันที่
+    if (!formData.startDate || !formData.endDate) {
+      alert("กรุณาเลือกวันที่เริ่มต้นและวันที่สิ้นสุด");
+      return;
     }
 
     const payload = {
@@ -55,8 +52,8 @@ export default function RegisterPage() {
       brand: formData.brand,
       model: formData.model,
       color: formData.color,
-      startDate: formData.isDateRange ? formData.startDate : null,
-      endDate: formData.isDateRange ? formData.endDate : null,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
     };
 
     try {
@@ -83,10 +80,10 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-        <Navbar />
+      <Navbar />
 
       <main className="p-10">
-        <h2 className="text-2xl font-bold text-center mb-8">ลงทะเบียน</h2>
+        <h2 className="text-2xl font-bold text-center mb-8">ลงทะเบียนรถ</h2>
         <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -152,37 +149,25 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
-              type="checkbox"
-              name="isDateRange"
+              type="date"
+              name="startDate"
               onChange={handleChange}
-              checked={formData.isDateRange}
+              className="border p-2 rounded"
             />
-            <label htmlFor="isDateRange">กำหนดวัน เริ่มต้น-สิ้นสุด</label>
+            <input
+              type="date"
+              name="endDate"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
           </div>
-
-          {formData.isDateRange && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="date"
-                name="startDate"
-                onChange={handleChange}
-                className="border p-2 rounded"
-              />
-              <input
-                type="date"
-                name="endDate"
-                onChange={handleChange}
-                className="border p-2 rounded"
-              />
-            </div>
-          )}
 
           <div>
             <button
               type="submit"
-              className="bg-green-600 text-white px-6 py-2 rounded"
+              className="bg-green-600 text-white px-6 py-2 rounded justify-center hover:bg-green-700 transition-all w-full"
             >
               Add
             </button>
